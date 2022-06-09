@@ -54,6 +54,7 @@ $routes->get('/groups/restore', 'Groups::restore');
 $routes->delete('/groups/deleted/(:any)', 'Groups::deleted/$1');
 $routes->delete('/groups/deleted', 'Groups::deleted');
 $routes->presenter('groups');
+$routes->get('contacts/export', 'Contacts::export');
 $routes->resource('contacts');
 
 /*

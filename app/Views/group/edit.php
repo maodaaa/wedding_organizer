@@ -25,16 +25,19 @@
                         <?= csrf_field() ?>
                                 <div class="card-body col-md-6">
                                     <div class="form-group">
-                                        <label>Nama Kontak Group</label>
-                                        <input type="text" name="name_group" class="form-control <?= $validation->hasError(
-                                          'name_group'
-                                        )
+                                        <label>Nama Group</label>
+                                        <input type="text" name="name_group" value="<?= old(
+                                          'name_group',
+                                          $group->name_group
+                                        ) ?>" class="form-control 
+                                        <?= isset($errors['name_group'])
                                           ? 'is-invalid'
-                                          : null ?>" 
-                                        value="<?= old('name_group') ?>" autofocus>
-                                        <div class="invalid-feedback">
-                                        <?= $validation->getError('name_group') ?>
-                                        </div>
+                                          : null ?> " autofocus>
+                                    <div class="invalid-feedback">
+                                        <?= isset($errors['name_group'])
+                                          ? $errors['name_group']
+                                          : null ?>
+                                    </div>
                                     </div>
                                     <div class="form-group mb-0">
                                         <label>Info</label>

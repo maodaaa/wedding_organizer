@@ -33,9 +33,35 @@
                   <div class="card-header">
                       <h4>Data Kontak Saya</h4>
                   </div>
+                  <div class="card-header">
+                    <form action="" method="get" autocomplate="off">
+                      <div class="float-left">
+                        <input type="text" name="keyword" value="<?= $keyword ?>" class="form-control" style="width:155pt;" placeholder="keyword pencarian">
+                      </div>
+                      <div class="float-right ml-2">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                        <?php
+                        $request = \Config\Services::request();
+                        $keyword = $request->getGet('keyword');
+                        if ($keyword != '') {
+                          $param = '?keyword=' . $keyword;
+                        } else {
+                          $param = '';
+                        }
+                        ?>
+                        <a href="<?= site_url(
+                          'contacts/export' . $param
+                        ) ?>" class="btn btn-primary">
+                          <i class="fas fa-download"></i>
+                          Export Excel
+                        </a>
+                      </div>
+                    </form>
+                  </div>
+                  
                   <div class="card-body">
                     <div class="table-responsive">
-                      <table class="table table-striped table-md" id="table1">
+                      <table class="table table-striped table-md">
                         <thead>
                           <tr>
                           <th>No</th>
@@ -50,9 +76,12 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <?php foreach ($contacts as $key => $value): ?>
+                        <?php
+                        $page = isset($_GET['page']) ? $_GET['page'] : 1;
+                        $no = 1 + 10 * ($page - 1);
+                        foreach ($contacts as $key => $value): ?>
                         <tr>
-                          <td><?= $key + 1 ?></td>
+                          <td><?= $no++ ?></td>
                           <td><?= $value->name_contact ?></td>
                           <td><?= $value->name_alias ?></td>
                           <td><?= $value->phone ?></td>
@@ -75,9 +104,16 @@
                           </form>
                           </td>
                         </tr>
-                        <?php endforeach; ?>
+                        <?php endforeach;
+                        ?>
                       </tbody>
                     </table>
+                    <div class="float-left">
+                      <i>Showing <?= 1 + 10 * ($page - 1) ?> to <?= $no - 1 ?> of 
+                      <?= $pager->getTotal() ?> entries</i>
+                    </div>
+                    <div class="float-right">
+                      <?= $pager->links('default', 'pagination') ?>                    
                     </div>
                   </div>
                 </div>

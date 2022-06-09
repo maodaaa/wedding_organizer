@@ -42,4 +42,23 @@ class ContactModel extends Model
     $query = $builder->get();
     return $query->getResult();
   }
+
+  function getPaginated($num, $keyword = null)
+  {
+    $builder = $this->builder();
+    $builder->join('groups', 'groups.id_group = contacts.id_group');
+    if ($keyword != '') {
+      $builder->like('name_contact', $keyword);
+      $builder->orLike('name_alias', $keyword);
+      $builder->orLike('phone', $keyword);
+      $builder->orLike('email', $keyword);
+      $builder->orLike('address', $keyword);
+      $builder->orLike('info_contact', $keyword);
+      $builder->orLike('groups.name_group', $keyword);
+    }
+    return [
+      'contacts' => $this->paginate($num),
+      'pager' => $this->pager,
+    ];
+  }
 }
